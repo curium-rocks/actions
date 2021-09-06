@@ -19,5 +19,5 @@ runs:
     shell: bash
   - run: ./deploy-node-service/create_inventory.sh ${{ inputs.hosts }} > inventory
     shell: bash
-  - run: cat inventory && ansible-playbook -i inventory ./deploy-node-service/playbook.yml 
+  - run: ansible-playbook -i ./inventory ./deploy-node-service/playbook.yml 
     shell: bash
