@@ -1,0 +1,11 @@
+name: Deploy Node Service CI
+on:
+  push: 
+    branches: ['main']
+    paths:
+    - 'deploy-node-service/**'
+jobs:
+  test: 
+    runs-on: 'ubuntu-latest'
+    steps:
+    - name: 'echo test'
