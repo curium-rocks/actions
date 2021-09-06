@@ -8,5 +8,4 @@ jobs:
   test: 
     runs-on: 'ubuntu-latest'
     steps:
-    - uses: actions/checkout@v2
-    - uses: deploy-node-service
+    - uses: curium-rocks/actions/deploy-node-service
