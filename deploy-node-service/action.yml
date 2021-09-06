@@ -1,7 +1,11 @@
 name: 'Deploy Node Service'
 description: 'Deploy a systemd service running Node.JS'
+inputs:
+  hosts:
+    required: true
+    description: 'A JSON array of hostnames to deploy the node service to'
 runs:
   using: "composite"
   steps:
-  - run: "echo test"
+  - run: "echo ${{ inputs.hosts }}"
     shell: bash
