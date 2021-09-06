@@ -19,5 +19,7 @@ runs:
     shell: bash
   - run: ./deploy-node-service/create_inventory.sh ${{ inputs.hosts }} > inventory
     shell: bash
+  - run: ansible -i inventory services -m ping
+    shell: bash
   - run: ansible-playbook -i ./inventory ./deploy-node-service/playbook.yml 
     shell: bash
