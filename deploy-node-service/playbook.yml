@@ -1,6 +1,6 @@
 - hosts: services
   roles:
-    - role: node_systemd_service
+    - role: bryopsida.nexus.node_systemd_service
       source_folder:  "{{ source_folder }}"
       should_restart: "{{ should_restart }}"
       description: "{{ description }}"
