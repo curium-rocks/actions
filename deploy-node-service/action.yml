@@ -1,0 +1,7 @@
+name: 'Deploy Node Service'
+description: 'Deploy a systemd service running Node.JS'
+runs:
+  using: "composite"
+  steps:
+  - run: "echo test"
+    shell: bash
