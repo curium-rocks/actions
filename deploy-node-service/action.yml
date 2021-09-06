@@ -14,6 +14,7 @@ inputs:
 runs:
   using: "composite"
   steps:
+  - uses: actions/checkout@v2
   - run: ansible-galaxy collection install bryopsida.nexus
     shell: bash
   - run: echo $PWD && ls -la && ./deploy-node-service/create_inventory.sh ${{ inputs.hosts }} > inventory
