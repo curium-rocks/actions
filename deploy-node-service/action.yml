@@ -17,9 +17,12 @@ runs:
   - uses: actions/checkout@v2
   - run: ansible-galaxy collection install bryopsida.nexus
     shell: bash
-  - run: ./deploy-node-service/create_inventory.sh ${{ inputs.hosts }} > inventory
+  - env:
+      HOSTS: ${{ inputs.hosts }}
+    run: |
+      ./deploy-node-service/create_inventory.sh $HOSTS > inventory
     shell: bash
-  - run: cat inventory && ansible -i inventory services -m ping
+  - run: ansible -i inventory services -m ping
     shell: bash
   - run: ansible-playbook -i ./inventory ./deploy-node-service/playbook.yml 
     shell: bash
