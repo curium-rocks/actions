@@ -3,9 +3,9 @@ description: 'Deploy a systemd service running Node.JS'
 inputs:
   hosts:
     required: true
-    description: 'A JSON array of hostnames to deploy the node service to'
+    description: 'A JSON array of hostnames to deploy the node service to: [{"hostname":"localhost", username: "root"}]'
 runs:
   using: "composite"
   steps:
-  - run: "echo ${{ inputs.hosts }}"
+  - run: "echo ${{ fromJson(inputs.hosts).hostname }}"
     shell: bash
