@@ -8,4 +8,5 @@ jobs:
     steps:
     - uses: curium-rocks/actions/deploy-node-service@main
       with:
-        hosts: '[{"hostname": "localhost","connection": "local", "username": "root"}]'
+        hosts: |
+          [{"hostname": "localhost","connection": "local", "username": "root"}]
