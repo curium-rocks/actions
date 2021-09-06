@@ -4,8 +4,16 @@ inputs:
   hosts:
     required: true
     description: 'A JSON array of hostnames to deploy the node service to: [{"hostname":"localhost", username: "root"}]'
+  service_name:
+    required: true
+    description: "The name of the systemd service, if it doesn't exist it will be created on the target host"
+  service_account:
+    required: true
+    description: "The service account that will run the service, if it doesn't exist it will be created"
 runs:
   using: "composite"
   steps:
+  - run: ansible-galaxy collection install bryopsida.nexus
+    shell: bash
   - run: "echo ${{ fromJson(inputs.hosts).hostname }}"
     shell: bash
