@@ -16,7 +16,7 @@ runs:
   steps:
   - run: ansible-galaxy collection install bryopsida.nexus
     shell: bash
-  - run: ls -la && ./deploy-node-service/create_inventory.sh ${{ inputs.hosts }} > inventory
+  - run: echo $PWD && ls -la && ./deploy-node-service/create_inventory.sh ${{ inputs.hosts }} > inventory
     shell: bash
   - run: ansible-playbook -i inventory ./deploy-node-service/playbook.yml 
     shell: bash
