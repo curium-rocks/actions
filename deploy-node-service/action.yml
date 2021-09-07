@@ -49,17 +49,53 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - uses: actions/checkout@v2
   - run: ansible-galaxy collection install bryopsida.nexus
     shell: bash
   - env:
       HOSTS: ${{ inputs.hosts }}
-    run: ./deploy-node-service/create_inventory.sh "$HOSTS" > inventory
+    run: |
+      function create_inventory {
+        json_str=$1
+        for row in $(echo "${json_str}" | jq -r '.[] | @base64'); do
+            _jq() {
+            echo ${row} | base64 --decode | jq -r ${1}
+            }
+          echo $(_jq '.hostname')  ansible_connection=$(_jq '.connection') ansible_user=$(_jq '.username')
+        done
+
+        echo ''
+        echo '[services]'
+        for row in $(echo "${json_str}" | jq -r '.[] | @base64'); do
+            _jq() {
+            echo ${row} | base64 --decode | jq -r ${1}
+            }
+          echo $(_jq '.hostname')  ansible_connection=$(_jq '.connection') ansible_user=$(_jq '.username')
+        done
+      }
+      create_inventory "$HOSTS" > /tmp/inventory
     shell: bash
-  - run: ansible -i inventory services -m ping
+  - run: ansible -i /tmp/inventory services -m ping
     shell: bash
   - run: |
-      ansible-playbook -i ./inventory ./deploy-node-service/playbook.yml \
+      cat << EOF > /tmp/playbook.yml
+      - hosts: services
+        roles:
+          - role: bryopsida.nexus.node_systemd_service
+            source_folder:  "{{ source_folder }}"
+            should_restart: "{{ should_restart }}"
+            description: "{{ description }}"
+            after: "{{ after }}"
+            working_directory: "{{ working_directory }}"
+            start_command: "{{ start_command }}"
+            restart_policy: "{{ restart_policy }}"
+            target: "{{ target }}"
+            service_name: "{{ service_name }}"
+            node_version: "{{ node_version }}"
+            service_account: "{{ service_account }}"
+      EOF
+    shell: bash
+  - run: |
+      ansible-playbook -i /tmp/inventory /tmp/playbook.yml \
        --extra-vars "service_name=${{ inputs.service_name }}" \
        --extra-vars "service_account=${{ inputs.service_account }}" \
        --extra-vars "source_folder=${{ inputs.source_folder }}" \
