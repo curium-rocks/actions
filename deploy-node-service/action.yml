@@ -20,6 +20,7 @@ runs:
   - env:
       HOSTS: ${{ inputs.hosts }}
     run: |
+      echo "hosts = $HOSTS"
       ./deploy-node-service/create_inventory.sh $HOSTS > inventory
     shell: bash
   - run: ansible -i inventory services -m ping
