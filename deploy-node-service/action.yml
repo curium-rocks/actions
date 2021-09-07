@@ -72,7 +72,7 @@ runs:
           echo $(_jq '.hostname')  ansible_connection=$(_jq '.connection') ansible_user=$(_jq '.username')
         done
       }
-      create_inventory "$HOSTS" > /tmp/inventory
+      create_inventory "$HOSTS" > $RUNNER_TEMP/inventory
     shell: bash
   - run: ansible -i $RUNNER_TEMP/inventory services -m ping
     shell: bash
