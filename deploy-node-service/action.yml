@@ -18,9 +18,8 @@ runs:
   - run: ansible-galaxy collection install bryopsida.nexus
     shell: bash
   - env:
-      HOSTS: "${{ inputs.hosts }}"
+      HOSTS: ${{ inputs.hosts }}
     run: |
-      echo "hosts map = $HOSTS"
       ./deploy-node-service/create_inventory.sh $HOSTS > inventory
     shell: bash
   - run: ansible -i inventory services -m ping
