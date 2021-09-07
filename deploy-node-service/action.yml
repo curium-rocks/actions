@@ -74,10 +74,10 @@ runs:
       }
       create_inventory "$HOSTS" > /tmp/inventory
     shell: bash
-  - run: ansible -i ${{ env.RUNNER_TEMP }}/inventory services -m ping
+  - run: ansible -i $RUNNER_TEMP/inventory services -m ping
     shell: bash
   - run: |
-      cat << EOF > ${{ env.RUNNER_TEMP }}/playbook.yml
+      cat << EOF > $RUNNER_TEMP/playbook.yml
       - hosts: services
         roles:
           - role: bryopsida.nexus.node_systemd_service
@@ -95,7 +95,7 @@ runs:
       EOF
     shell: bash
   - run: |
-      ansible-playbook -i ${{ env.RUNNER_TEMP }}/inventory ${{ env.RUNNER_TEMP}}/playbook.yml \
+      ansible-playbook -i $RUNNER_TEMP/inventory $RUNNER_TEMP/playbook.yml \
        --extra-vars "service_name=${{ inputs.service_name }}" \
        --extra-vars "service_account=${{ inputs.service_account }}" \
        --extra-vars "source_folder=${{ inputs.source_folder }}" \
