@@ -1,0 +1,49 @@
+name: 'Validate Node App'
+description: 'Build, scan, and test a Node.JS App'
+inputs:
+  node_version:
+    required: true
+    description: "The node version to use"
+    default: 16.x
+  github_token:
+    required: true
+    description: "Used during scan step"
+  sonarqube_token:
+    required: true
+    description: "Used during scan step"
+  artifact_name:
+    required: false
+    description: "Artifact name for docs and other build artifacts"
+    default: build-artifacts
+runs:
+  using: "composite"
+  steps:
+  - name: Use Node.js
+    uses: actions/setup-node@v2
+    with:
+      node-version: ${{ inputs.node_version }}
+      cache: 'npm'
+  - run: npm ci
+    shell: bash
+  - run: npm run lint
+    shell: bash
+  - run: npm audit --production
+    shell: bash
+  - run: npm run build
+    shell: bash
+  - run: npm run test
+    shell: bash
+  - run: npm run scan
+    shell: bash
+    env:
+      GITHUB_TOKEN: ${{ inputs.github_token }}
+      SONARQUBE_KEY: ${{ inputs.sonarqube_token }}
+  - run: npm run doc
+    shell: bash
+  - uses: actions/upload-artifact@v2
+    with:
+      name: ${{ inputs.artifact_name }}
+      path: |
+        build/**/*
+        coverage/**/*
+        docs/**/*
