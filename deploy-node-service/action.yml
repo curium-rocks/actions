@@ -7,10 +7,45 @@ inputs:
   service_name:
     required: true
     description: "The name of the systemd service, if it doesn't exist it will be created on the target host"
+    default: 'node-systemd-service'
   service_account:
     required: true
     description: "The service account that will run the service, if it doesn't exist it will be created"
-  
+    default: 'node-systemd-user'
+  source_folder:
+    required: true
+    description: "Path to the service source folder"
+  should_restart:
+    required: true
+    description: "If the service should be restarted after updating"
+    default: 'false'
+  description:
+    required: true
+    description: "The system unit description"
+  after:
+    required: true
+    description: "The target to run the system after"
+    default: "network.target"
+  working_directory:
+    required: true
+    description: "The working directory of the service"
+    default: "/opt/curium/node-systemd-service"
+  start_command:
+    required: true
+    description: "The start command for the service"
+    default: "npm start"
+  restart_policy:
+    required: true
+    description: "The restart policy of the service"
+    default: "on-failure"
+  target:
+    required: true
+    description: "The target to include the service in"
+    default: "multi-user.target"
+  node_version:
+    required: true
+    description: "The node version to package with the service"
+    default: "lts/fermium"
 runs:
   using: "composite"
   steps:
@@ -19,11 +54,21 @@ runs:
     shell: bash
   - env:
       HOSTS: ${{ inputs.hosts }}
-    run: |
-      echo "hosts = $HOSTS"
-      ./deploy-node-service/create_inventory.sh "$HOSTS" > inventory
+    run: ./deploy-node-service/create_inventory.sh "$HOSTS" > inventory
     shell: bash
   - run: ansible -i inventory services -m ping
     shell: bash
-  - run: ansible-playbook -i ./inventory ./deploy-node-service/playbook.yml 
+  - run: |
+      ansible-playbook -i ./inventory ./deploy-node-service/playbook.yml \
+       --extra-vars "service_name=${{ inputs.service_name }}" \
+       --extra-vars "service_account=${{ inputs.service_account }}" \
+       --extra-vars "source_folder=${{ inputs.source_folder }}" \
+       --extra-vars "should_restart=${{ inputs.should_restart }}" \
+       --extra-vars "description=${{ inputs.description }}" \
+       --extra-vars "after=${{ inputs.after }}" \
+       --extra-vars "working_directory=${{ inputs.working_directory }}" \
+       --extra-vars "start_command=${{ inputs.start_command }}" \
+       --extra-vars "restart_policy=${{ inputs.restart_policy }}" \
+       --extra-vars "target=${{ inputs.target }}" \
+       --extra-vars "node_version=${{ inputs.node_version }}" \
     shell: bash
