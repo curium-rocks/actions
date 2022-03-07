@@ -40,7 +40,7 @@ runs:
       SONARQUBE_KEY: ${{ inputs.sonarqube_token }}
   - run: npm run doc
     shell: bash
-  - uses: actions/upload-artifact@v2
+  - uses: actions/upload-artifact@v3
     with:
       name: ${{ inputs.artifact_name }}
       path: |
