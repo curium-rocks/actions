@@ -33,7 +33,7 @@ runs:
     shell: bash
   - run: npm run test
     shell: bash
-  - run: npm run scan
+  - run: npm run scan --if-present
     shell: bash
     env:
       GITHUB_TOKEN: ${{ inputs.github_token }}
@@ -45,5 +45,4 @@ runs:
       name: ${{ inputs.artifact_name }}
       path: |
         build/**/*
-        coverage/**/*
         docs/**/*
