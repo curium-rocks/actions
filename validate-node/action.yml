@@ -27,7 +27,7 @@ runs:
     shell: bash
   - run: npm run lint
     shell: bash
-  - run: npm audit --production
+  - run: npm audit --only=prod
     shell: bash
   - run: npm run build
     shell: bash
