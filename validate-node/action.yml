@@ -45,5 +45,4 @@ runs:
       name: ${{ inputs.artifact_name }}
       path: |
         build/**/*
-        coverage/**/*
         docs/**/*
