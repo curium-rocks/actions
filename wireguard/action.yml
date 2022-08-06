@@ -1,0 +1,11 @@
+name: 'Connect to WireGuard'
+description: 'Make a connection between the github runner and a WireGuard server'
+inputs:
+  node_version:
+    required: true
+    description: "The node version to use"
+    default: 16.x
+runs:
+  using: 'node16'
+  main: 'index.js'
+  post: 'cleanup.js'
