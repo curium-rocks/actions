@@ -6,9 +6,10 @@ on:
     paths:
       - actions/wireguard/**
   push: 
-    branches: ['main']
+    branches:
+      - main
     paths:
-      - 'actions/wireguard/**/*'
+      - actions/wireguard/**
 jobs:
   test: 
     runs-on: 'ubuntu-latest'
