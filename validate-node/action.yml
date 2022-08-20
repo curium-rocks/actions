@@ -37,8 +37,8 @@ runs:
     name: SonarCloud Scan
     uses: SonarSource/sonarcloud-github-action@master
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      SONAR_TOKEN: ${{ secrets.SONARQUBE_KEY }}
+      GITHUB_TOKEN: ${{ inputs.github_token }}
+      SONAR_TOKEN: ${{ inputs.sonarqube_token }}
   - run: npm run doc
     shell: bash
   - uses: actions/upload-artifact@v3
