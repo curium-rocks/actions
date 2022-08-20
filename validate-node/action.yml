@@ -33,11 +33,12 @@ runs:
     shell: bash
   - run: npm run test
     shell: bash
-  - run: npm run scan --if-present
-    shell: bash
+  - if: ${{ github.actor != 'dependabot[bot]' }}
+    name: SonarCloud Scan
+    uses: SonarSource/sonarcloud-github-action@master
     env:
-      GITHUB_TOKEN: ${{ inputs.github_token }}
-      SONARQUBE_KEY: ${{ inputs.sonarqube_token }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONARQUBE_KEY }}
   - run: npm run doc
     shell: bash
   - uses: actions/upload-artifact@v3
