@@ -8,6 +8,12 @@ inputs:
   npm_token:
     required: true
     description: "The npm access token"
+  user_name:
+    required: true
+    description: "The user name that will be displayed on npm"
+  user_email:
+    required: true
+    description: "The user email that will be displayed on npm"
 runs:
   using: "composite"
   steps:
@@ -20,9 +26,9 @@ runs:
   - shell: bash
     run: npm ci
   - shell: bash
-    run: 'git config user.email "git@curium.rocks"'
+    run: 'git config user.email "${{ inputs.user_email }}"'
   - shell: bash
-    run: 'git config user.name "ci"'
+    run: 'git config user.name "${{ inputs.user_name }}"'
   - shell: bash
     if: github.ref == 'refs/heads/main'
     run: npm version minor
