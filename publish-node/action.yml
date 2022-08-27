@@ -14,6 +14,18 @@ inputs:
   user_email:
     required: true
     description: "The user email that will be displayed on npm"
+  publish_docs:
+    required: false
+    description: "Whether to publish the docs or not"
+    default: "false"
+  docs_dir:
+    required: false
+    description: "Folder housing the docs"
+    default: "docs"
+  gh_pages_branch:
+    required: false
+    description: "Branch for github pages"
+    default: "github-pages"
 runs:
   using: "composite"
   steps:
@@ -41,3 +53,11 @@ runs:
       NODE_ACCESS_TOKEN: ${{ inputs.npm_token }}
   - shell: bash
     run: npm publish --access public
+  - if: ${{ inputs.publish_docs == 'true' }}
+    shell: bash
+    name: Publish to GitHub Pages
+    uses: tsunematsu21/actions-publish-gh-pages@v1.0.2
+    with:
+      dir: ${{ inputs.docs_dir }}
+      branch: ${{ inputs.gh_pages_branch }}
+      token: ${{ secrets.GITHUB_TOKEN }}
