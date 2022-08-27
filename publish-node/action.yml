@@ -22,13 +22,6 @@ inputs:
     required: false
     description: "Folder housing the docs"
     default: "docs"
-  gh_pages_branch:
-    required: false
-    description: "Branch for github pages"
-    default: "github-pages"
-  gh_access_token:
-    required: false
-    description: "Access token for pushing to github pages"
 runs:
   using: "composite"
   steps:
@@ -60,9 +53,15 @@ runs:
     shell: bash
     run: npm run doc
   - if: ${{ inputs.publish_docs == 'true' }}
-    name: Publish to GitHub Pages
-    uses: tsunematsu21/actions-publish-gh-pages@v1.0.2
+    name: Setup Pages
+    uses: actions/configure-pages@v2
+  - if: ${{ inputs.publish_docs == 'true' }}
+    name: Upload artifact
+    uses: actions/upload-pages-artifact@v1
     with:
-      dir: ${{ inputs.docs_dir }}
-      branch: ${{ inputs.gh_pages_branch }}
-      token: ${{ inputs.gh_access_token }}
+      # Upload entire repository
+      path: '${{ inputs.docs_dir }}'
+  - name: Deploy to GitHub Pages
+    id: deployment
+    uses: actions/deploy-pages@v1
+
