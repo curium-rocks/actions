@@ -61,7 +61,8 @@ runs:
     with:
       # Upload entire repository
       path: '${{ inputs.docs_dir }}'
-  - name: Deploy to GitHub Pages
+  - if: ${{ inputs.publish_docs == 'true' }}
+    name: Deploy to GitHub Pages
     id: deployment
     uses: actions/deploy-pages@v1
 
