@@ -26,6 +26,9 @@ inputs:
     required: false
     description: "Branch for github pages"
     default: "github-pages"
+  gh_access_token:
+    required: false
+    description: "Access token for pushing to github pages"
 runs:
   using: "composite"
   steps:
@@ -59,4 +62,4 @@ runs:
     with:
       dir: ${{ inputs.docs_dir }}
       branch: ${{ inputs.gh_pages_branch }}
-      token: ${{ secrets.GITHUB_TOKEN }}
+      token: ${{ inputs.gh_access_token }}
