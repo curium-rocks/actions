@@ -24,9 +24,6 @@ inputs:
     default: "docs"
 runs:
   using: "composite"
-  environment:
-    name: github-pages
-    url: ${{ steps.deployment.outputs.page_url }}
   steps:
   - uses: actions/checkout@v3
   - name: Use Node.js
