@@ -56,6 +56,9 @@ runs:
       NODE_ACCESS_TOKEN: ${{ inputs.npm_token }}
   - shell: bash
     run: npm publish --access public
+  - if: ${{ inputs.publish_docs == 'true }}
+    shell: bash
+    run: npm run doc
   - if: ${{ inputs.publish_docs == 'true' }}
     name: Publish to GitHub Pages
     uses: tsunematsu21/actions-publish-gh-pages@v1.0.2
