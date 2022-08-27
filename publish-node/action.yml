@@ -54,7 +54,6 @@ runs:
   - shell: bash
     run: npm publish --access public
   - if: ${{ inputs.publish_docs == 'true' }}
-    shell: bash
     name: Publish to GitHub Pages
     uses: tsunematsu21/actions-publish-gh-pages@v1.0.2
     with:
