@@ -45,6 +45,9 @@ runs:
     run: |
       git push origin HEAD:main --follow-tags
   - shell: bash
+    if: github.ref == 'refs/heads/main'
+    run: gh release create $(node -p "require('./package.json').version") --generate-notes
+  - shell: bash
     run: npm config set //registry.npmjs.org/:_authToken ${{ inputs.npm_token}}
     env:
       NODE_ACCESS_TOKEN: ${{ inputs.npm_token }}
