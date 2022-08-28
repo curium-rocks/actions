@@ -42,7 +42,8 @@ runs:
     run: npm version minor
   - shell: bash
     if: github.ref == 'refs/heads/main'
-    run: git push origin HEAD:main
+    run: |
+      git push origin HEAD:main --follow-tags
   - shell: bash
     run: npm config set //registry.npmjs.org/:_authToken ${{ inputs.npm_token}}
     env:
