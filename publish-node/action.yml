@@ -14,6 +14,10 @@ inputs:
   user_email:
     required: true
     description: "The user email that will be displayed on npm"
+  create_release:
+    required: false
+    description: "Create a release on the repo with notes"
+    default: "false"
   publish_docs:
     required: false
     description: "Whether to publish the docs or not"
@@ -22,6 +26,9 @@ inputs:
     required: false
     description: "Folder housing the docs"
     default: "docs"
+  token:
+    required: false
+    description: "A GITHUB Pat used to create the release"
 runs:
   using: "composite"
   steps:
@@ -45,10 +52,10 @@ runs:
     run: |
       git push origin HEAD:main --follow-tags
   - shell: bash
-    if: github.ref == 'refs/heads/main'
+    if: ${{ github.ref == 'refs/heads/main' && inputs.create_release == 'true' }}
     run: gh release create $(node -p "require('./package.json').version") --generate-notes
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ inputs.token }}
   - shell: bash
     run: npm config set //registry.npmjs.org/:_authToken ${{ inputs.npm_token}}
     env:
