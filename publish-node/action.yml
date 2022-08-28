@@ -47,6 +47,8 @@ runs:
   - shell: bash
     if: github.ref == 'refs/heads/main'
     run: gh release create $(node -p "require('./package.json').version") --generate-notes
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   - shell: bash
     run: npm config set //registry.npmjs.org/:_authToken ${{ inputs.npm_token}}
     env:
