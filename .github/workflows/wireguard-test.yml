@@ -1,0 +1,23 @@
+name: Wireguard CI
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - actions/wireguard/*
+  push: 
+    branches:
+      - main
+    paths:
+      - actions/wireguard/*
+jobs:
+  test: 
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@v2
+    # create cluster
+    # deploy wg chart
+    # connect to cluster with action
+    - uses: ./actions/wireguard
+    # launch a test echo container
+    # verify connectivity to the container
