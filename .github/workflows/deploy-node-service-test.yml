@@ -2,6 +2,8 @@ name: Deploy Node Service CI
 on:
   push: 
     branches: ['main']
+    paths:
+      - 'actions/deploy-node-service-test/**/*'
 jobs:
   test: 
     runs-on: 'ubuntu-latest'
